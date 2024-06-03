@@ -71,12 +71,32 @@ def sort_df():
 
 
 # Tabs for app layout
-tabs = st.tabs(['Write a ticket', 'Ticket Status and Analytics'])
+tabs = st.tabs(['Write a Expenses', 'Expenses Tracker and Analytics', 'My Tracker','My Graph'])
+
+#my addition
+tabs_side = st.sidebar.tabs(['My Expenses'])
+
+#my addition
+with tabs_side[0]:
+ with st.form('sidebar'):
+    spend_type_side = st.selectbox('Type', ['Expense', 'Saving', 'Income'])
+    date_selection_side = st.date_input("Pick a Date",'today')
+    category_side = st.selectbox('category', ['Rent', 'Groceries', 'Fuel'])
+    submit_side = st.form_submit_button('Submit')
+ if submit_side:
+    selected_date = date_selection_side
+    df02 = pd.DataFrame([{'Date':selected_date,
+                          'Type':spend_type_side,
+                          'Category':category_side,}])
+    st.write('Expense submitted')
+    st.dataframe(df02,use_container_width=True, hide_index=True)
+    
 
 recent_ticket_number = int(max(st.session_state.df.ID).split('-')[1])
 
 with tabs[0]:
   with st.form('addition'):
+    #my addition
     issue = st.text_area('Description of issue')
     priority = st.selectbox('Priority', ['High', 'Medium', 'Low'])
     submit = st.form_submit_button('Submit')
